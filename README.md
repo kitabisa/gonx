@@ -1,28 +1,24 @@
-# gonx [![Build Status](https://travis-ci.org/satyrius/gonx.svg)](https://travis-ci.org/satyrius/gonx) [![Go Report Card](https://goreportcard.com/badge/github.com/satyrius/gonx)](https://goreportcard.com/report/github.com/satyrius/gonx)
+# gonx
 
-`gonx` is Nginx access log reader library for `Go`. In fact you can use it for any format.
-
-## New owner needed 🙌
- 
-I am not using golang as often as I used to, which makes the maintenance of this library an issue. I'll gladly share the ownership with anyone eager to maintain and evolve it.
+`gonx` is access log parser for any format.
 
 ## Usage
 
 The library provides `Reader` type and two constructors for it.
 
 Common constructor `NewReader` gets opened file (any `io.Reader` in fact) and log format of type `string` as argumets.
-[Format](#format) is in form os nginx `log_format` string.
+[Format](#format) is in form os Nginx `log_format` string.
 
 ```go
 reader := gonx.NewReader(file, format)
 ```
 
-`NewNginxReader` provides more magic. It gets log file `io.Reader`, nginx config file `io.Reader`
+`NewNginxReader` provides more magic. It gets log file `io.Reader`, Nginx config file `io.Reader`
 and `log_format` name `string` as a third. The actual format for `Parser` will be extracted from
-given nginx config.
+given Nginx config.
 
 ```go
-reader := gonx.NewNginxReader(file, nginxConfig, format_name)
+reader := gonx.NewNginxReader(file, NginxConfig, format_name)
 ```
 
 `Reader` implements `io.Reader`. Here is example usage
@@ -48,7 +44,7 @@ I have a few benchmarks for parsing `string` log record into `Entry` using `gonx
 	BenchmarkParseSimpleLogRecord      100000            19457 ns/op
 	BenchmarkParseLogRecord             20000            84425 ns/op
 
-And here is some real wold stats. I got ~300Mb log file with ~700K records and process with [simple scripts](https://github.com/satyrius/gonx/tree/master/benchmarks).
+And here is some real wold stats. I got ~300Mb log file with ~700K records and process with [simple scripts](https://github.com/kitabisa/gonx/tree/master/benchmarks).
 
 * Reading whole file line by line with `bufio.Scanner` without any other processing takes a *one second*.
 * Read in the same manner plus parsing with `gonx.Parser` takes *about 80 seconds*
@@ -56,9 +52,9 @@ And here is some real wold stats. I got ~300Mb log file with ~700K records and p
 
 ## Format
 
-As I said above this library is primary for nginx access log parsing, but it can be configured to parse any
+As I said above this library is primary for Nginx access log parsing, but it can be configured to parse any
 other format. `NewReader` accepts `format` argument, it will be transformed to regular expression and used
-for log line by line parsing. Format is nginx-like, here is example
+for log line by line parsing. Format is Nginx-like, here is example
 
 	`$remote_addr [$time_local] "$request"`
 
@@ -81,11 +77,7 @@ capability will be supported for the following public interfaces.
 
 ## Changelog
 
-All major changes will be noticed in [release notes](https://github.com/satyrius/gonx/releases).
-
-## Roadmap
-
-I have no roadmap for this project at the moment for a few reasons. At the first, it is a simple library and I want to keep it. At the second, there is no feature requests, and for me, this library do its job. A few things may happen: the default binary, to use this not only as a library, and performance improvements if they will be needed.
+All major changes will be noticed in [release notes](https://github.com/kitabisa/gonx/releases).
 
 ## Contributing
 
